@@ -22,6 +22,7 @@
         <module>servlet</module>
         <module>websocket</module>
         <module>kumuluzee-discovery</module>
+        <module>kumuluzee-kafka</module>
     </modules>
     <packaging>pom</packaging>
 
