@@ -1,8 +1,8 @@
 # KumuluzEE Kafka &mdash; consume Kafka messages
 
-> Develop a REST service that produces Kafka messages to selected topic
+> Develop a KumuluzEE microservice that consumes Kafka messages from a selected topic
 
-The objective of this sample is to show how to consume Kafka messages.
+The objective of this sample is to show how to consume Kafka messages with KumuluzEE microservices.
 The tutorial will guide you through all the necessary steps. You will add KumuluzEE dependencies into pom
 .xml. You will develop a simple annotated method, which uses KumuluzEE Kafka extension for consuming messages.
 Required knowledge: basic familiarity with Apache Kafka.
@@ -167,8 +167,8 @@ Add the `maven-dependency-plugin` build plugin to copy all the necessary depende
 
 ### Implement the onMessage method
 
-Implement class for example TestConsumer with a method annotated with `@KafkaListener(topics = {"test"})`. 
-The method takes for a parameter the `ConsumerRecord` that contains the data of the received message.
+To implement a consumer, which will listen for messages, we need to implement a class with the corresponding method. We will implement the `TestConsumer` class with the `onMessage` method annotated with the `@KafkaListener(topics = {"test"})` annotation. 
+The method takes the `ConsumerRecord` parameter that contains the data of the received messages.
 
 ```java
 public class TestConsumer {
@@ -184,12 +184,11 @@ public class TestConsumer {
 }
 ```
 
-In the example above, we defined the topics names with the parameter of the `@KafkaListener` annotation, 
-but we could also rename the onMessage method to the desired topic name.
+In the example above, we defined the topics names with the parameter of the `@KafkaListener` annotation. Alternatively, we could also rename the onMessage method to match the desired topic name.
 
 ### Add required configuration for the Kafka Producer
 
-You have to add the Kafka Consumer configuration using any KumuluzEE configuration source.
+We have to add the Kafka Consumer configuration using any KumuluzEE configuration source.
 
 For example, you can use config.properties file, placed in resources folder:
 
@@ -206,4 +205,4 @@ kumuluzee.kafka.consumer.value.deserializer=org.apache.kafka.common.serializatio
 ### Build the microservice and run it
 
 To build the microservice and run the example, use the commands as described in previous sections.
- 
+
