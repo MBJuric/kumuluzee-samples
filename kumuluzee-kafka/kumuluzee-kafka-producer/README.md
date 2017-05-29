@@ -76,14 +76,14 @@ The example uses Docker to set up the Kafka and Zookeeper instances and maven to
     $ java -cp target/classes:target/dependency/* com.kumuluz.ee.EeApplication
     ```
 
-    in Windows environment use the command
+    In Windows environment use the command
     ```batch
     java -cp target/classes;target/dependency/* com.kumuluz.ee.EeApplication
     ```
     
-4. The mesage producing service can be accessed on the following URL:
+4. The message producing service can be accessed on the following URL:
 * JAX-RS REST resource, for producing messages - http://localhost:8080/v1/produce
-    with a POST request with a json object, for example:
+    with a POST request with a JSON object, for example:
     
     ```javascript
       {
@@ -209,7 +209,7 @@ public class Message {
 ```
 
 Register your module as JAX-RS service and define the application path. You could do that in web.xml or
-for example with `@ApplicationPath` annotation:
+with the `@ApplicationPath` annotation:
 
 ```java
 @ApplicationPath("v1")
@@ -251,9 +251,7 @@ public class ProducerResource {
 }
 ```
 
-In the example above, we inject the Kafka Producer with the `@Inject` and `@KafkaProducer` annotation. From the message data we create 
-a ProducerRecord `new ProducerRecord<String,String>(topic, key, msg)` and call the method send on the producer with the ProducerRecord 
-and the Callback parameters. In the Callback we receive the sent message metadata `RecordMetadata` or the Exception if an error occurred.
+In the example above, we have injected the Kafka Producer with the `@Inject` and `@KafkaProducer` annotations. From the message data we have created a ProducerRecord `new ProducerRecord<String,String>(topic, key, msg)` and called the method send on the producer with the ProducerRecord and the Callback parameters. In the Callback we have received the sent message metadata `RecordMetadata` or the Exception if an error would have occurred.
 
 ### Add required configuration for the Kafka Producer
 
@@ -275,4 +273,4 @@ kumuluzee.kafka.producer.value.serializer=org.apache.kafka.common.serialization.
 ### Build the microservice and run it
 
 To build the microservice and run the example, use the commands as described in previous sections.
- 
+
