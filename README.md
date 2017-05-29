@@ -49,6 +49,8 @@ The following samples are available:
 - KumuluzEE Config
 - KumuluzEE Logs
 - KumuluzEE OAuth2
+- KumuluzEE Discovery
+- KumuluzEE Kafka
 
 ## Requirements
 
