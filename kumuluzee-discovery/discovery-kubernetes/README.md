@@ -5,7 +5,7 @@
 The objective of this sample is to show how to deploy services, using KumuluzEE service discovery to Kubernetes cluster.
 The tutorial will guide you through the necessary steps. You will build two KumuluzEE samples and deploy them to
 Kubernetes cluster.
-Required knowledge: basic familiarity with Kubernetes and basic familarity with KumuluzEE service discovery.
+Required knowledge: basic familiarity with Kubernetes and basic familiarity with KumuluzEE service discovery.
 
 ## Requirements
 
@@ -47,7 +47,7 @@ In order to run this example you will need the following:
         ```
 
 6. Docker:
-    * If you have installed [docker](http://docs.docker.com/engine/installation/)
+    * If you have installed [Docker](http://docs.docker.com/engine/installation/)
      you can check the version by typing the following in a command line:
     
         ```
@@ -57,7 +57,7 @@ In order to run this example you will need the following:
 ## Prerequisites
 
 In order to start this sample, you will have to setup a Kubernetes cluster and configure kubectl tool to use it.
-To run a local minikube cluster run following commands:
+To run a local minikube cluster execute the following commands:
 
 1. Start minikube cluster and configure kubectl to use it:
     
@@ -65,7 +65,7 @@ To run a local minikube cluster run following commands:
     $ minikube start
     ```
 
-2. Configure docker to use minikube registry:
+2. Configure Docker to use minikube registry:
 
     ```bash
     $ eval $(minikube docker-env)
@@ -136,7 +136,7 @@ $ minikube stop
 ## Tutorial
 
 This tutorial will guide you through the steps required to deploy two sample services,
-which use KumuluzEE Service Discovery, to Kubernetes cluster.
+which use KumuluzEE Discovery, to Kubernetes cluster.
 We will deploy a sample, which registers itself to etcd and a sample, which discovers it.
 
 We will follow these steps:
