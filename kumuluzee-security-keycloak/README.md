@@ -41,8 +41,12 @@ To run this sample you will need a Keycloak instance. Here is an example on how 
 $ docker run \
          -e KEYCLOAK_USER=<USERNAME> \
          -e KEYCLOAK_PASSWORD=<PASSWORD> \
-         jboss/keycloak
+         -p 8082:8080 jboss/keycloak
 ```
+
+## Set-up Keycloack
+
+Execute the steps neccessary to configure Keycloak. Steps are described below in subsection `Configure Keycloak`.
 
 ## Usage
 
@@ -91,7 +95,8 @@ or clone the existing sample
 ### Add Maven dependencies
 
 Since your existing starting point is the existing KumuluzEE JAX-RS REST sample, you should already have the 
-dependencies for `kumuluzee-bom`, `kumuluzee-core`, `kumuluzee-servlet-jetty` and `kumuluzee-jax-rs-jersey` configured in `pom.xml`.
+dependencies for `kumuluzee-bom`, `kumuluzee-core`, `kumuluzee-servlet-jetty` and `kumuluzee-jax-rs-jersey` configured 
+in `pom.xml`.
 
 Add the `kumuluzee-cdi-weld` and `kumuluzee-security-keycloak` dependencies:
 ```xml
@@ -134,12 +139,34 @@ Add the `maven-dependency-plugin` build plugin to copy all the necessary depende
 
 ### Configure Keycloak
 
-Log into the Keycloak using your admin account and create a new realm, e.g. **customers-realm**. Then create two new 
-clients. One will be used to retrieve access tokens and the other one wil be used only to verify issued tokens. The first 
-client, e.g. **customers-app**, should be of **public** access type. Under **Valid redirect URIs** enter *http://localhost*. 
-Create the second client and set its access type to **bearer-only** and give it a name, e.g. **customers-api**. Create 
-a user and set the credentials. Then create a couple of roles and assign them to the new user. When finished, open up 
-the new client and copy the configuration under *Installation/Keycloak OIDC JSON* and save it for later.
+1. Log into the Keycloak (open browser http://localhost:8082) using your admin account and create a new realm named: `customers-realm`.
+
+2. Create two new clients. One will be used to retrieve access tokens and the other one will be used only to verify issued tokens. Create the first client with Client ID `customers-app`. Leave the Protocol option set to openid-connect. After creating the client, verify, that the `Access Type` is set to `public`. Under `Root URL` and `Web origins` enter `http://localhost:8080`, under `Valid Redirect URIs` enter `http://localhost:8080/*`. Port 8080 points to your sample application port.
+
+3. Create the second client with Client ID `customers-api`. Change the `Access Type` to `bearer-only`.
+
+
+4. Create a user. Make sure to set `User Enabled` to `ON`. After adding the user, make sure that `Required User Actions` is empty. Go to Credentials and set the new password, and set `Temporary` to `OFF` before confirming.
+
+5. Create a roles `admin` and `user`.
+
+6. Open new user and go to `Role Mappings` and assign the Role `user` to new user.
+
+7. Open client `customers-api` go to `Installation` and select `Installation/Keycloak OIDC JSON` and copy the content.
+
+8. Create file `resources/config.yaml` and use the content from previous step and paste it to json element:
+
+```yaml
+kumuluzee:
+  security:
+      keycloak:
+        json: '{"realm": "customers-realm",
+                "bearer-only": true,
+                "auth-server-url": "http://localhost:8080/auth",
+                "ssl-required": "external",
+                "resource": "customers-api"}'
+```
+
 
 ### Implement security
 
@@ -216,14 +243,14 @@ $ curl -X POST \
 
 If everything was implemented correctly you should receive a 401 HTTP response error.
 
-Now obtain an access token from Keycloak (**NOTE**: To do this, you will first have to retrieve the client ID and the 
-secret of your public client on Keycloak and the username and password of your Keycloak user):
+Now obtain an access token from Keycloak (**NOTE**: To do this, you will first have to retrieve the client ID your 
+public client on Keycloak and the username and password of your Keycloak user):
 
 ```bash
 $ curl -X POST \
   http://localhost:8082/auth/realms/customers/protocol/openid-connect/token \
   -H 'content-type: application/x-www-form-urlencoded' \
-  -d 'grant_type=password&client_id=customers-app&client_secret=ffffffff-ffff-ffff-ffff-ffffffffffff&username=johndoe&password=abc123'
+  -d 'grant_type=password&client_id=customers-app&username=johndoe&password=abc123'
 ```
 
 After receiving the access token try again by creating a new customer, now with the access token in the request:
