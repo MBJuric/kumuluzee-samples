@@ -1,9 +1,0 @@
-kumuluzee:
-  env: dev
-  version: 1.0.0
-  baseurl: http://localhost:8081
-  discovery:
-    etcd:
-      hosts: http://127.0.0.1:2379
-    ttl: 20
-    ping-interval: 15

@@ -3,17 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>kumuluzee-samples</artifactId>
+        <artifactId>kumuluzee-discovery-consul</artifactId>
         <groupId>com.kumuluz.ee.samples</groupId>
         <version>2.3.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jpa</artifactId>
+    <artifactId>discovery-consul-discover-jaxrs</artifactId>
 
-    <name>KumuluzEE JPA and CDI sample</name>
-    <description>JPA and CDI usage sample with KumuluzEE</description>
+    <name>KumuluzEE Discovery JAX-RS sample</name>
+    <description>Discover service with KumuluzEE JAX-RS service</description>
 
     <dependencyManagement>
         <dependencies>
@@ -44,26 +43,11 @@
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-cdi-weld</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-jpa-eclipselink</artifactId>
-        </dependency>
 
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>1.7.25</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
+            <groupId>com.kumuluz.ee.discovery</groupId>
+            <artifactId>kumuluzee-discovery-consul</artifactId>
+            <version>${kumuluzee-discovery.version}</version>
         </dependency>
     </dependencies>
 
@@ -86,20 +70,8 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--<plugin>-->
-                <!--<groupId>com.kumuluz.ee</groupId>-->
-                <!--<artifactId>kumuluzee-loader-maven-plugin</artifactId>-->
-                <!--<version>1.0.0-SNAPSHOT</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>package</id>-->
-                        <!--<goals>-->
-                            <!--<goal>package</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
         </plugins>
     </build>
+
+
 </project>

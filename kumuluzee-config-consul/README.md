@@ -1,14 +1,14 @@
-# KumuluzEE Config sample with etcd 
+# KumuluzEE Config sample with Consul 
 
-> Build a REST service which utilizes KumuluzEE Config to access configuration properties stored in etcd and pack it 
+> Build a REST service which utilizes KumuluzEE Config to access configuration properties stored in Consul and pack it 
 as a KumuluzEE microservice
 
 The objective of this sample is to show how to develop a microservice that uses KumuluzEE Config extension to
-access configuration properties stored in etcd. In this sample we develop a simple REST service that returns
+access configuration properties stored in Consul. In this sample we develop a simple REST service that returns
 a list of configuration properties from all available configuration sources and pack it as KumuluzEE microservice. This 
 tutorial will guide you through all the necessary steps. You will first add KumuluzEE dependencies into pom.xml. To 
 develop the REST service, you will use the standard JAX-RS 2 API. Required knowledge: basic familiarity with JAX-RS 2
-and basic concepts of REST, JSON, yaml and etcd.
+and basic concepts of REST, JSON, yaml and Consul.
 
 ## Requirements
 
@@ -33,30 +33,23 @@ In order to run this example you will need the following:
         ```
         git --version
         ```
+
+4. Local Consul agent:
+    * If you have installed Consul, you can check the version by typing the following in a command line:
+    
+        ```
+        consul version
+        ```
     
 
 ## Prerequisites
 
-To run this sample you will need an etcd instance. Note that such setup with only one etcd node is not viable for 
-production environments, but only for developing purposes. Here is an example on how to quickly run an etcd instance 
-with docker:
+To run this sample you will need a local Consul agent. Note that such setup with Consul running in development mode is
+not viable for production environments, but only for developing purposes. Here is an example on how to quickly run a
+local Consul agent in development mode:
 
    ```bash
-    $ docker run -d --net=host \
-        --name etcd \
-        --volume=/tmp/etcd-data:/etcd-data \
-        quay.io/coreos/etcd:v3.1.7 \
-        /usr/local/bin/etcd \
-        --name my-etcd-1 \
-        --data-dir /etcd-data \
-        --listen-client-urls http://0.0.0.0:2379 \
-        --advertise-client-urls http://0.0.0.0:2379 \
-        --listen-peer-urls http://0.0.0.0:2380 \
-        --initial-advertise-peer-urls http://0.0.0.0:2380 \
-        --initial-cluster my-etcd-1=http://0.0.0.0:2380 \
-        --initial-cluster-token my-etcd-token \
-        --initial-cluster-state new \
-        --auto-compaction-retention 1
+    $ consul agent -dev -ui
    ```
 
 
@@ -67,7 +60,7 @@ The example uses maven to build and run the microservice.
 1. Build the sample using maven:
 
     ```bash
-    $ cd kumuluzee-config-etcd
+    $ cd kumuluzee-config-consul
     $ mvn clean package
     ```
 
@@ -102,7 +95,7 @@ We will follow these steps:
 * Implement the service using standard JAX-RS 2
 * Build the microservice
 * Run it
-* Dynamically change configuration properties in etcd
+* Dynamically change configuration properties in Consul
 
 ### Add Maven dependencies
 
@@ -151,7 +144,7 @@ Add dependency to KumuluzEE Config extension:
 ```xml
     <dependency>
         <groupId>com.kumuluz.ee.config</groupId>
-        <artifactId>kumuluzee-config-etcd</artifactId>
+        <artifactId>kumuluzee-config-consul</artifactId>
         <version>${kumuluzee-config.version}</version>
     </dependency>
 ```
@@ -195,8 +188,6 @@ kumuluzee:
   config:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
-    etcd:
-      hosts: http://192.168.99.100:2379
 
 rest-config:
   string-property: Monday
@@ -215,7 +206,7 @@ public class ConfigApplication extends Application {
 
 Implement an application scoped CDI bean that will automatically load and hold our configuration properties. It shall
 be annotated with `@ConfigBundle` annotation whose value represents the prefix for the configuration properties keys.
-Add a `@ConfigValue(watch = true)` to enable watch on the key. This will monitor the changes of this key in etcd and 
+Add a `@ConfigValue(watch = true)` to enable watch on the key. This will monitor the changes of this key in Consul and 
 automatically update the value in the configuration bean. 
  
 ```java
@@ -268,13 +259,13 @@ public class ConfigResource {
 
 To build the microservice and run the example, use the commands as described in previous sections.
 
-Since we have not defined any configuration properties in etcd, GET http://localhost:8080/v1/config will return 
-configuration properties from configuraiton file. We can now try and some values in etcd. Since we enabled watch on 
-the field `stringProperty`, it will be dynamically updated on any change in etcd. We can add a value to etcd with the
-following command:
+Since we have not defined any configuration properties in Consul, GET http://localhost:8080/v1/config will return 
+configuration properties from configuraiton file. We can now try and some values in Consul. Since we enabled watch on 
+the field `stringProperty`, it will be dynamically updated on any change in Consul. We can add a value to Consul from
+the user interface, which can be accessed at `http://localhost:8500`.
 
-   ```bash
-    $ docker exec etcd etcdctl --endpoints //192.168.99.100:2379 set /environments/dev/services/customer-service/1.0.0/config/rest-config/string-property test_string
-   ```
+To set a value, navigate to `KEY/VALUE` tab and create key 
+`environments/dev/services/customer-service/1.0.0/config/rest-config/string-property` 
+with a value of your own choosing.
 
-Access the config endpoint again and you will get an updated value from etcd.
+Access the config endpoint again and you will get an updated value from Consul.

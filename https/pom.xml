@@ -6,14 +6,13 @@
         <artifactId>kumuluzee-samples</artifactId>
         <groupId>com.kumuluz.ee.samples</groupId>
         <version>2.3.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jpa</artifactId>
+    <artifactId>https</artifactId>
 
-    <name>KumuluzEE JPA and CDI sample</name>
-    <description>JPA and CDI usage sample with KumuluzEE</description>
+    <name>KumuluzEE JAX-RS over HTTPS sample</name>
+    <description>JAX-RS over HTTPS usage sample with KumuluzEE</description>
 
     <dependencyManagement>
         <dependencies>
@@ -39,20 +38,6 @@
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-cdi-weld</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-jpa-eclipselink</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.0.0</version>
         </dependency>
 
         <dependency>
@@ -86,20 +71,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--<plugin>-->
-                <!--<groupId>com.kumuluz.ee</groupId>-->
-                <!--<artifactId>kumuluzee-loader-maven-plugin</artifactId>-->
-                <!--<version>1.0.0-SNAPSHOT</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>package</id>-->
-                        <!--<goals>-->
-                            <!--<goal>package</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
         </plugins>
     </build>
 </project>
